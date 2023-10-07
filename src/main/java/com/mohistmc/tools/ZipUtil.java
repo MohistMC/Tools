@@ -37,7 +37,7 @@ public class ZipUtil {
                             Files.copy(path, zs);
                             zs.closeEntry();
                         } catch (IOException e) {
-                            System.out.println(e);
+                            e.printStackTrace();
                         }
                     });
         }

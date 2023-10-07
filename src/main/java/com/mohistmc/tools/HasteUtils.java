@@ -23,12 +23,13 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 
 public class HasteUtils {
 
     public static String pasteMohist(String text) throws IOException {
-        HttpURLConnection connection = (HttpURLConnection) new URL("https://haste.mohistmc.com/documents").openConnection();
+        HttpURLConnection connection = (HttpURLConnection) URI.create("https://haste.mohistmc.com/documents").toURL().openConnection();
         connection.setRequestMethod("POST");
         connection.setRequestProperty("User-Agent", "Mohist tools Java Api");
         connection.setUseCaches(false);

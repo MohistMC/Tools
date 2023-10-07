@@ -16,6 +16,9 @@ public class NamedThreadFactory implements ThreadFactory {
 
     @Override
     public Thread newThread(Runnable r) {
-        return Thread.ofVirtual().name(name + " - " + (++id)).start(r);
+        Thread thread = new Thread(r);
+        thread.setName(name + " - " + (++id));
+        thread.setPriority(4);
+        return thread;
     }
 }
