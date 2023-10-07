@@ -1,7 +1,11 @@
 package com.mohistmc.tools.geoip;
 
+import static com.mohistmc.tools.geoip.GeoLiteConstants.IPV_CSV_GEONAME_ID;
+import static com.mohistmc.tools.geoip.GeoLiteConstants.IPV_CSV_REGISTERED_COUNTRY_GEONAME_ID;
+import static com.mohistmc.tools.geoip.GeoLiteConstants.LOCATIONS_CSV_COUNTRY_CODE_ISO;
+import static com.mohistmc.tools.geoip.GeoLiteConstants.LOCATIONS_CSV_COUNTRY_NAME;
+import static com.mohistmc.tools.geoip.GeoLiteConstants.LOCATIONS_CSV_GEO_ID;
 import com.mohistmc.tools.geoip.internal.IpAddressMatcher;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,12 +15,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static com.mohistmc.tools.geoip.GeoLiteConstants.IPV_CSV_GEONAME_ID;
-import static com.mohistmc.tools.geoip.GeoLiteConstants.IPV_CSV_REGISTERED_COUNTRY_GEONAME_ID;
-import static com.mohistmc.tools.geoip.GeoLiteConstants.LOCATIONS_CSV_COUNTRY_CODE_ISO;
-import static com.mohistmc.tools.geoip.GeoLiteConstants.LOCATIONS_CSV_COUNTRY_NAME;
-import static com.mohistmc.tools.geoip.GeoLiteConstants.LOCATIONS_CSV_GEO_ID;
 
 public class GeoIPResidentImpl implements GeoIP {
 
