@@ -3,6 +3,7 @@ package com.mohistmc.tools;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
+import java.net.URL;
 import java.net.URLConnection;
 
 /**
@@ -10,6 +11,16 @@ import java.net.URLConnection;
  * @date 2023/10/7 0:58:48
  */
 public class ConnectionUtil {
+
+    public static boolean hasUrl(String s) {
+        try {
+            URL url = new URL(s);
+            url.openStream();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
     public static URLConnection getConn(String URL) {
         URLConnection conn;
@@ -36,7 +47,7 @@ public class ConnectionUtil {
         }
     }
 
-    public long getUrlMillis(String link) {
+    public static long getUrlMillis(String link) {
         try {
             HttpURLConnection connection = (HttpURLConnection) URI.create(link).toURL().openConnection();
             connection.setRequestMethod("GET");
