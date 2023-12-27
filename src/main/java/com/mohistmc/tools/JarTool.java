@@ -19,7 +19,9 @@
 package com.mohistmc.tools;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.jar.JarFile;
 
 /**
  * @Author Mgazul
@@ -61,5 +63,15 @@ public class JarTool {
         String path = classz.getProtectionDomain().getCodeSource().getLocation().getFile();
         path = java.net.URLDecoder.decode(path, StandardCharsets.UTF_8);
         return new File(path);
+    }
+
+    public static boolean isCorrupted(File f) {
+        try {
+            JarFile j = new JarFile(f);
+            j.close();
+            return false;
+        } catch (IOException e) {
+            return true;
+        }
     }
 }

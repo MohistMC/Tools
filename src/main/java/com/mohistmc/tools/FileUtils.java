@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.jar.JarFile;
 
 /**
  * @author Mgazul by MohistMC
@@ -36,5 +37,19 @@ public class FileUtils {
             }
         }
         file.delete();
+    }
+
+    public static boolean fileExists(File f, String fName) {
+        if (!f.exists()) return false;
+        try {
+            JarFile jf = new JarFile(f);
+            if (jf.getJarEntry(fName) != null) {
+                jf.close();
+                return true;
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        return false;
     }
 }

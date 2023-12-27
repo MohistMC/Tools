@@ -16,8 +16,8 @@ public class NongLi {
 
 
     private static int year;
-    private int month;
-    private int day;
+    private final int month;
+    private final int day;
     private boolean leap;
     static String[] chineseNumber;
     static SimpleDateFormat chineseDateFormat;
