@@ -1,5 +1,6 @@
 package com.mohistmc.tools;
 
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -14,8 +15,11 @@ public class ListUtils {
         }
     }
 
-    public static boolean is(List list1, List list2) {
+    /**
+     * Whether the value in list 1 exists in list 2
+     */
+    public static boolean is(List<Object> list1, List<Object> list2) {
         if (list1.size() != list2.size()) return false;
-        return list2.containsAll(list1);
+        return new HashSet<>(list2).containsAll(list1);
     }
 }
