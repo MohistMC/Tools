@@ -7,7 +7,7 @@ group = 'com.mohistmc'
 version = '0.4'
 
 java {
-    toolchain.languageVersion = JavaLanguageVersion.of(17)
+    toolchain.languageVersion = JavaLanguageVersion.of(8)
 }
 
 repositories {

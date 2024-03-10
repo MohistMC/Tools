@@ -1,17 +1,33 @@
 package com.mohistmc.tools;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.channels.Channels;
+import java.nio.channels.FileChannel;
+import java.nio.channels.ReadableByteChannel;
+import java.nio.file.StandardOpenOption;
+import java.time.Duration;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
+import lombok.Data;
 
 /**
  * @author Mgazul by MohistMC
  * @date 2023/10/7 0:58:48
  */
 public class ConnectionUtil {
+
+    private static final boolean debug = true;
 
     public static boolean isValid(String url) {
         try {
@@ -24,45 +40,110 @@ public class ConnectionUtil {
 
     public static boolean canAccess(String urlStr) {
         try {
-            URL url = new URL(urlStr);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("HEAD");
+            URLConnection urlConnection = getConn(urlStr);
+            if (urlConnection == null) {
+                return false;
+            }
+            HttpURLConnection connection = (HttpURLConnection) urlConnection;
             connection.connect();
 
             int responseCode = connection.getResponseCode();
             return responseCode >= 200 && responseCode < 300;
-
         } catch (IOException e) {
             return false;
         }
     }
 
-    public static URLConnection getConn(String URL) {
-        URLConnection conn;
+    public static Integer getCode(String urlStr) {
         try {
-            conn = URI.create(URL).toURL().openConnection();
-            conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Firefox/31.0");
+            URLConnection urlConnection = getConn(urlStr);
+            if (urlConnection == null) {
+                return null;
+            }
+            HttpURLConnection connection = (HttpURLConnection) urlConnection;
+            connection.connect();
+            return connection.getResponseCode();
         } catch (IOException e) {
             return null;
         }
-        return conn;
     }
 
-    public static String getSize(long size) {
-        return (size >= 1048576L) ? (float) size / 1048576.0F + "MB" : ((size >= 1024) ? (float) size / 1024.0F + "KB" : size + "B");
-    }
-
-    public static Long getUrlMillis(String urlString) {
+    public static URLConnection getConn(String URL) {
+        URLConnection connection;
         try {
-            long startTime = System.currentTimeMillis();
-            HttpURLConnection connection = (HttpURLConnection) URI.create(urlString).toURL().openConnection();
-            connection.setRequestMethod("HEAD");
-            connection.connect();
-            int responseCode = connection.getResponseCode();
-            long endTime = System.currentTimeMillis();
-            return endTime - startTime;
-        } catch (Exception e) {
+            connection = URI.create(URL).toURL().openConnection();
+            connection.setRequestProperty("User-Agent", "MohistMC-Tools/" + Tools.version());
+            return connection;
+        } catch (IOException e) {
             return null;
+        }
+    }
+
+    public static long measureLatency(String urlString) {
+        try {
+            long start = System.nanoTime();
+            URLConnection urlConnection = getConn(urlString);
+            if (urlConnection == null) {
+                return Long.MAX_VALUE;
+            }
+            HttpURLConnection connection = (HttpURLConnection) urlConnection;
+
+            int responseCode = connection.getResponseCode();
+            long end = System.nanoTime();
+            return Duration.ofNanos(end - start).toMillis();
+        } catch (Exception e) {
+            return Long.MAX_VALUE;
+        }
+    }
+
+    public static String fastURL(List<String> urls) {
+        ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+
+        List<CompletableFuture<LatencyResult>> futures = urls.stream()
+                .map(url -> CompletableFuture.supplyAsync(() -> measureLatency(url), executor)
+                        .thenApply(latency -> new LatencyResult(url, latency)))
+                .collect(Collectors.toList());
+
+        Optional<LatencyResult> minLatencyResult = futures.stream()
+                .map(CompletableFuture::join)
+                .min(Comparator.comparing(LatencyResult::getLatency));
+
+        executor.shutdown();
+
+        if (minLatencyResult.isPresent()) {
+            LatencyResult result = minLatencyResult.get();
+            return result.url;
+        } else {
+            return null;
+        }
+    }
+
+    public static boolean downloadFile(String URL, File f) {
+        try {
+            URLConnection conn = getConn(URL);
+            if (conn == null) {
+                return false;
+            }
+            ReadableByteChannel rbc = Channels.newChannel(conn.getInputStream());
+            FileChannel fc = FileChannel.open(f.toPath(), StandardOpenOption.CREATE, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING);
+
+            fc.transferFrom(rbc, 0, Long.MAX_VALUE);
+            fc.close();
+            rbc.close();
+            return true;
+        } catch (IOException | NullPointerException ignored) {
+            return false;
+        }
+    }
+
+    @Data
+    static class LatencyResult {
+        final String url;
+        final long latency;
+
+        LatencyResult(String url, long latency) {
+            this.url = url;
+            this.latency = latency;
         }
     }
 }

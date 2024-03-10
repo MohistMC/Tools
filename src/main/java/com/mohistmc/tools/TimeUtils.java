@@ -33,7 +33,7 @@ public class TimeUtils {
             return remainingDays + "天" + remainingHours + "时" + remainingMinutes + "分" + remainingSeconds + "秒";
         } else if (remainingHours != 0) {
             return remainingHours + "时" + remainingMinutes + "分" + remainingSeconds + "秒";
-        }else if (remainingMinutes != 0) {
+        } else if (remainingMinutes != 0) {
             return remainingMinutes + "分" + remainingSeconds + "秒";
         } else if (remainingSeconds != 0) {
             return remainingSeconds + "秒";

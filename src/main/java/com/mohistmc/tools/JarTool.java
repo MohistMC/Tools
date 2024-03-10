@@ -20,7 +20,6 @@ package com.mohistmc.tools;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.jar.JarFile;
 
 /**
@@ -33,6 +32,16 @@ public class JarTool {
 
     public JarTool(Class<?> classz) {
         this.classz = classz;
+    }
+
+    public static boolean isCorrupted(File f) {
+        try {
+            JarFile j = new JarFile(f);
+            j.close();
+            return false;
+        } catch (IOException e) {
+            return true;
+        }
     }
 
     public String getJarPath() {
@@ -61,17 +70,6 @@ public class JarTool {
 
     public File getFile() {
         String path = classz.getProtectionDomain().getCodeSource().getLocation().getFile();
-        path = java.net.URLDecoder.decode(path, StandardCharsets.UTF_8);
         return new File(path);
-    }
-
-    public static boolean isCorrupted(File f) {
-        try {
-            JarFile j = new JarFile(f);
-            j.close();
-            return false;
-        } catch (IOException e) {
-            return true;
-        }
     }
 }

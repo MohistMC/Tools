@@ -16,7 +16,7 @@ public class CooldownAPI {
         this.Now = Now;
     }
 
-    public boolean isAfter(){
+    public boolean isAfter() {
         return Now.isAfter(old);
     }
 
