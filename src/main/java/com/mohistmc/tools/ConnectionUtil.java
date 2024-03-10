@@ -2,6 +2,7 @@ package com.mohistmc.tools;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
@@ -12,12 +13,26 @@ import java.net.URLConnection;
  */
 public class ConnectionUtil {
 
-    public static boolean hasUrl(String s) {
+    public static boolean isValid(String url) {
         try {
-            URL url = new URL(s);
-            url.openStream();
+            new URL(url);
             return true;
-        } catch (Exception e) {
+        } catch (MalformedURLException e) {
+            return false;
+        }
+    }
+
+    public static boolean canAccess(String urlStr) {
+        try {
+            URL url = new URL(urlStr);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("HEAD");
+            connection.connect();
+
+            int responseCode = connection.getResponseCode();
+            return responseCode >= 200 && responseCode < 300;
+
+        } catch (IOException e) {
             return false;
         }
     }
@@ -37,27 +52,17 @@ public class ConnectionUtil {
         return (size >= 1048576L) ? (float) size / 1048576.0F + "MB" : ((size >= 1024) ? (float) size / 1024.0F + "KB" : size + "B");
     }
 
-    public static boolean isDown(String s) {
+    public static Long getUrlMillis(String urlString) {
         try {
-            HttpURLConnection httpUrlConnection = (HttpURLConnection) URI.create(s).toURL().openConnection();
-            httpUrlConnection.connect();
-            return httpUrlConnection.getResponseCode() != 200;
-        } catch (Exception e) {
-            return true;
-        }
-    }
-
-    public static long getUrlMillis(String link) {
-        try {
-            HttpURLConnection connection = (HttpURLConnection) URI.create(link).toURL().openConnection();
-            connection.setRequestMethod("GET");
+            long startTime = System.currentTimeMillis();
+            HttpURLConnection connection = (HttpURLConnection) URI.create(urlString).toURL().openConnection();
+            connection.setRequestMethod("HEAD");
             connection.connect();
-            long start = System.currentTimeMillis();
             int responseCode = connection.getResponseCode();
-            long end = System.currentTimeMillis();
-            return end - start;
+            long endTime = System.currentTimeMillis();
+            return endTime - startTime;
         } catch (Exception e) {
-            return -0L;
+            return null;
         }
     }
 }
