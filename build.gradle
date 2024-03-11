@@ -20,6 +20,18 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
 }
 
+jar {
+    manifest {
+        attributes([
+                'Specification-Title'   : 'Tools',
+                'Specification-Vendor'  : 'MohistMC',
+                'Implementation-Title'  : 'Tools',
+                'Implementation-Version': version,
+                'Implementation-Vendor' : 'MohistMC'
+        ] as LinkedHashMap, 'com/mohistmc/tools/')
+    }
+}
+
 publishing {
     publications {
         maven(MavenPublication) {
