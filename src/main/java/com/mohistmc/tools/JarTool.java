@@ -20,6 +20,7 @@ package com.mohistmc.tools;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.jar.JarFile;
 
 /**
@@ -70,6 +71,6 @@ public class JarTool {
 
     public File getFile() {
         String path = classz.getProtectionDomain().getCodeSource().getLocation().getFile();
-        return new File(path);
+        return new File(new String(path.getBytes(), StandardCharsets.UTF_8));
     }
 }
