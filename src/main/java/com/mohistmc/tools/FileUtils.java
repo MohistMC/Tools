@@ -2,7 +2,7 @@ package com.mohistmc.tools;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
+import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,5 +52,12 @@ public class FileUtils {
             return false;
         }
         return false;
+    }
+
+    public static void fileWriterMethod(String filepath, String content) {
+        try (FileWriter fileWriter = new FileWriter(filepath)) {
+            fileWriter.append(content);
+        } catch (Exception ignored) {
+        }
     }
 }
