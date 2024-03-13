@@ -2,6 +2,7 @@ package com.mohistmc.tools;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -51,5 +52,15 @@ public class FileUtils {
             return false;
         }
         return false;
+    }
+
+    public static boolean isCorrupted(File f) {
+        try {
+            JarFile j = new JarFile(f);
+            j.close();
+            return false;
+        } catch (IOException e) {
+            return true;
+        }
     }
 }
