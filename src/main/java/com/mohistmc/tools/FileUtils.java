@@ -53,14 +53,4 @@ public class FileUtils {
         }
         return false;
     }
-
-    public static boolean isCorrupted(File f) {
-        try {
-            JarFile j = new JarFile(f);
-            j.close();
-            return false;
-        } catch (IOException e) {
-            return true;
-        }
-    }
 }
