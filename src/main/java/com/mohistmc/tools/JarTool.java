@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.jar.JarFile;
+import lombok.SneakyThrows;
 
 /**
  * @Author Mgazul
@@ -69,8 +70,10 @@ public class JarTool {
         return file.getName();
     }
 
+    @SneakyThrows
     public File getFile() {
         String path = classz.getProtectionDomain().getCodeSource().getLocation().getFile();
-        return new File(new String(path.getBytes(), StandardCharsets.UTF_8));
+        path = java.net.URLDecoder.decode(path, String.valueOf(StandardCharsets.UTF_8));
+        return new File(path);
     }
 }
