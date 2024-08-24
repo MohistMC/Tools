@@ -16,11 +16,10 @@ public class XMLUtil {
      * @since 5.0.6
      */
     public static String escapeXML(final String s, final boolean onlyASCII) {
-        char cc[] = s.toCharArray();
+        char[] cc = s.toCharArray();
         int len = cc.length;
-        StringBuffer sb = new StringBuffer();
-        for (int k = 0; k < len; ++k) {
-            int c = cc[k];
+        StringBuilder sb = new StringBuilder();
+        for (int c : cc) {
             switch (c) {
                 case '<':
                     sb.append("&lt;");
@@ -42,7 +41,7 @@ public class XMLUtil {
                         if (onlyASCII && c > 127)
                             sb.append("&#").append(c).append(';');
                         else
-                            sb.append((char)c);
+                            sb.append((char) c);
                     }
             }
         }
@@ -58,7 +57,7 @@ public class XMLUtil {
     public static String unescapeXML(final String s) {
         char[] cc = s.toCharArray();
         int len = cc.length;
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         int pos;
         String esc;
         for (int i = 0; i < len; i++) {
