@@ -1,8 +1,10 @@
 package com.mohistmc.tools;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
+import java.math.BigInteger;
+import java.nio.file.Files;
+import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import lombok.SneakyThrows;
 
@@ -18,27 +20,14 @@ public class SHA256 {
      * @param is
      * @return
      */
-    @SneakyThrows
     public static String as(InputStream is) {
-        try (InputStream inputStream = is) {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] byteArray = new byte[1024];
-            int bytesCount;
-
-            while ((bytesCount = inputStream.read(byteArray)) != -1) {
-                digest.update(byteArray, 0, bytesCount);
-            }
-
-            // 将字节数组转换为十六进制字符串
-            byte[] bytes = digest.digest();
-            StringBuilder sb = new StringBuilder();
-            for (byte b : bytes) {
-                sb.append(String.format("%02x", b));
-            }
-
-            return sb.toString();
+        try {
+            return String.format("%032x", new BigInteger(1, new DigestInputStream(is, MessageDigest.getInstance("SHA-256")).getMessageDigest().digest())).toLowerCase();
+        } catch (Exception e) {
+            return null;
         }
     }
+
 
     /**
      * Get the SHA-256 value of the file
@@ -46,10 +35,11 @@ public class SHA256 {
      * @param file
      * @return
      */
-    @SneakyThrows
     public static String as(File file) {
-        try (FileInputStream fis = new FileInputStream(file)) {
-            return as(fis);
+        try {
+            return String.format("%032x", new BigInteger(1, MessageDigest.getInstance("SHA-256").digest(Files.readAllBytes(file.toPath())))).toLowerCase();
+        } catch (Exception e) {
+            return null;
         }
     }
 
@@ -59,11 +49,8 @@ public class SHA256 {
      * @param filePath
      * @return
      */
-    @SneakyThrows
     public static String as(String filePath) {
-        try (FileInputStream fis = new FileInputStream(filePath)) {
-            return as(fis);
-        }
+        return as(new File(filePath));
     }
 
     /**
