@@ -18,7 +18,11 @@
 
 package com.mohistmc.tools;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.stream.Stream;
@@ -41,5 +45,22 @@ public class ZipUtil {
                         }
                     });
         }
+    }
+
+    public static void getFileContent(Object fileInPath) throws IOException {
+        BufferedReader br = null;
+        if (fileInPath == null) {
+            return;
+        }
+        if (fileInPath instanceof String) {
+            br = new BufferedReader(new FileReader((String) fileInPath));
+        } else if (fileInPath instanceof InputStream) {
+            br = new BufferedReader(new InputStreamReader((InputStream) fileInPath));
+        }
+        String line;
+        while ((line = br.readLine()) != null) {
+            System.out.println(line);
+        }
+        br.close();
     }
 }

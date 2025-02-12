@@ -21,6 +21,7 @@ package com.mohistmc.tools;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.jar.JarFile;
 import lombok.SneakyThrows;
 
@@ -75,5 +76,14 @@ public class JarTool {
         String path = classz.getProtectionDomain().getCodeSource().getLocation().getFile();
         path = java.net.URLDecoder.decode(path, String.valueOf(StandardCharsets.UTF_8));
         return new File(path);
+    }
+
+    public static void restartServer(List<String> cmd, boolean shutdown) throws Exception {
+        ProcessBuilder pb = new ProcessBuilder(cmd);
+        pb.inheritIO().start().waitFor();
+        Thread.sleep(2000);
+        if (shutdown) {
+            System.exit(0);
+        }
     }
 }
