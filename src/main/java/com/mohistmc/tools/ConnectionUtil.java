@@ -19,7 +19,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
-import lombok.Data;
 
 /**
  * @author Mgazul by MohistMC
@@ -106,7 +105,7 @@ public class ConnectionUtil {
 
         Optional<LatencyResult> minLatencyResult = futures.stream()
                 .map(CompletableFuture::join)
-                .min(Comparator.comparing(LatencyResult::getLatency));
+                .min(Comparator.comparing(LatencyResult::latency));
 
         executor.shutdown();
 
@@ -136,14 +135,6 @@ public class ConnectionUtil {
         }
     }
 
-    @Data
-    static class LatencyResult {
-        final String url;
-        final long latency;
-
-        LatencyResult(String url, long latency) {
-            this.url = url;
-            this.latency = latency;
-        }
+    record LatencyResult(String url, long latency) {
     }
 }

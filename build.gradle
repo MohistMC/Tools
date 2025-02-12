@@ -4,10 +4,10 @@ plugins {
 }
 
 group = 'com.mohistmc'
-version = '0.5.1'
+version = '0.6'
 
 java {
-    toolchain.languageVersion = JavaLanguageVersion.of(8)
+    toolchain.languageVersion = JavaLanguageVersion.of(17)
 }
 
 tasks.withType(JavaCompile).configureEach {
@@ -21,8 +21,8 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'org.projectlombok:lombok:1.18.30'
-    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+    compileOnly 'org.projectlombok:lombok:1.18.36'
+    annotationProcessor 'org.projectlombok:lombok:1.18.36'
 }
 
 jar {
