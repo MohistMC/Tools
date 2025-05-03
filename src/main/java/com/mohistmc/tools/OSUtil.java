@@ -9,7 +9,7 @@ public class OSUtil {
             String operSys = System.getProperty("os.name").toLowerCase();
             if (operSys.contains("win")) {
                 os = OS.WINDOWS;
-            } else if (operSys.contains("nix") || operSys.contains("nux") || operSys.contains("aix")) {
+            } else if (operSys.contains("nix") || operSys.contains("nux") || operSys.contains("aix") || operSys.contains("bsd")) {
                 os = OS.LINUX;
             } else if (operSys.contains("mac")) {
                 os = OS.MAC;
