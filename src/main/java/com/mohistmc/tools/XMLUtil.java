@@ -2,15 +2,16 @@ package com.mohistmc.tools;
 
 /**
  * Contains utility methods for XML.
+ *
  * @author Balder
  * @since 5.0.6
- *
  */
 public class XMLUtil {
 
     /**
      * Escapes a string with the appropriated XML codes.
-     * @param s the string to be escaped
+     *
+     * @param s         the string to be escaped
      * @param onlyASCII codes above 127 will always be escaped with &amp;#nn; if <CODE>true</CODE>
      * @return the escaped string
      * @since 5.0.6
@@ -51,7 +52,8 @@ public class XMLUtil {
     /**
      * Unescapes a String, replacing &#nn;, &lt;, &gt;, &amp;, &quot;,
      * and &apos to the corresponding characters.
-     * @param s	a String with entities
+     *
+     * @param s a String with entities
      * @return the unescaped string
      */
     public static String unescapeXML(final String s) {
@@ -69,14 +71,13 @@ public class XMLUtil {
                     if (esc.startsWith("#")) {
                         esc = esc.substring(1);
                         if (isValidCharacterValue(esc)) {
-                            c = (char)Integer.parseInt(esc);
+                            c = (char) Integer.parseInt(esc);
                             i = pos;
                         } else {
                             i = pos;
                             continue;
                         }
-                    }
-                    else {
+                    } else {
                         int tmp = unescape(esc);
                         if (tmp > 0) {
                             c = tmp;
@@ -85,7 +86,7 @@ public class XMLUtil {
                     }
                 }
             }
-            sb.append((char)c);
+            sb.append((char) c);
         }
         return sb.toString();
     }
@@ -93,8 +94,9 @@ public class XMLUtil {
     /**
      * Unescapes 'lt', 'gt', 'apos', 'quote' and 'amp' to the
      * corresponding character values.
-     * @param	s	a string representing a character
-     * @return	a character value
+     *
+     * @param    s    a string representing a character
+     * @return a character value
      */
     public static int unescape(String s) {
         if ("apos".equals(s))
@@ -112,23 +114,24 @@ public class XMLUtil {
 
     /**
      * Checks if a character value should be escaped/unescaped.
-     * @param	s	the String representation of an integer
-     * @return	true if it's OK to escape or unescape this value
+     *
+     * @param    s    the String representation of an integer
+     * @return true if it's OK to escape or unescape this value
      */
     public static boolean isValidCharacterValue(String s) {
         try {
             int i = Integer.parseInt(s);
             return isValidCharacterValue(i);
-        }
-        catch (NumberFormatException nfe) {
+        } catch (NumberFormatException nfe) {
             return false;
         }
     }
 
     /**
      * Checks if a character value should be escaped/unescaped.
-     * @param	c	a character value
-     * @return	true if it's OK to escape or unescape this value
+     *
+     * @param    c    a character value
+     * @return true if it's OK to escape or unescape this value
      */
     public static boolean isValidCharacterValue(int c) {
         return (c == 0x9 || c == 0xA || c == 0xD
@@ -139,10 +142,11 @@ public class XMLUtil {
 
     /**
      * Looks for a character in a character array, starting from a certain position
-     * @param needle	the character you're looking for
-     * @param haystack	the character array
-     * @param start		the start position
-     * @return	the position where the character was found, or -1 if it wasn't found.
+     *
+     * @param needle   the character you're looking for
+     * @param haystack the character array
+     * @param start    the start position
+     * @return the position where the character was found, or -1 if it wasn't found.
      */
     public static int findInArray(char needle, char[] haystack, int start) {
         for (int i = start; i < haystack.length; i++) {
@@ -166,7 +170,8 @@ public class XMLUtil {
      * (method found in org.apache.xerces.impl.XMLEntityManager, originally published
      * by the Apache Software Foundation under the Apache Software License; now being
      * used in iText under the MPL)
-     * @param b4    The first four bytes of the input.
+     *
+     * @param b4 The first four bytes of the input.
      * @return an IANA-encoding string
      * @since 5.0.6
      */

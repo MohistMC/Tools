@@ -6,6 +6,7 @@ import java.math.BigInteger;
 import java.nio.file.Files;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
+import java.util.Objects;
 import lombok.SneakyThrows;
 
 /**
@@ -62,7 +63,7 @@ public class SHA256 {
      */
     @SneakyThrows
     public static boolean is(InputStream is, String toBeCheckSum) {
-        return as(is).equals(toBeCheckSum);
+        return Objects.equals(as(is), toBeCheckSum);
     }
 
     /**
@@ -74,7 +75,7 @@ public class SHA256 {
      */
     @SneakyThrows
     public static boolean is(File file, String toBeCheckSum) {
-        return as(file).equals(toBeCheckSum);
+        return Objects.equals(as(file), toBeCheckSum);
     }
 
     /**

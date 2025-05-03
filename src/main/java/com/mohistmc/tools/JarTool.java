@@ -47,6 +47,15 @@ public class JarTool {
         }
     }
 
+    public static void restartServer(List<String> cmd, boolean shutdown) throws Exception {
+        ProcessBuilder pb = new ProcessBuilder(cmd);
+        pb.inheritIO().start().waitFor();
+        Thread.sleep(2000);
+        if (shutdown) {
+            System.exit(0);
+        }
+    }
+
     public String getJarPath() {
         File file = getFile();
         if (file == null) {
@@ -76,14 +85,5 @@ public class JarTool {
         String path = classz.getProtectionDomain().getCodeSource().getLocation().getFile();
         path = java.net.URLDecoder.decode(path, String.valueOf(StandardCharsets.UTF_8));
         return new File(path);
-    }
-
-    public static void restartServer(List<String> cmd, boolean shutdown) throws Exception {
-        ProcessBuilder pb = new ProcessBuilder(cmd);
-        pb.inheritIO().start().waitFor();
-        Thread.sleep(2000);
-        if (shutdown) {
-            System.exit(0);
-        }
     }
 }
