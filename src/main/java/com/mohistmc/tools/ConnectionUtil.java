@@ -137,4 +137,27 @@ public class ConnectionUtil {
 
     record LatencyResult(String url, long latency) {
     }
+
+    public static boolean isValidHost(String host) {
+        // 分离主机和端口（如果有）
+        String[] parts = host.split(":");
+        String mainPart = parts[0];
+        int port = parts.length > 1 ? Integer.parseInt(parts[1]) : -1;
+
+        // 验证域名规则（支持国际化域名IDN）
+        String domainPattern =
+                "^((?!-)[A-Za-z0-9-]{1,63}(?<!-)\\.)+[A-Za-z]{2,6}$"; // 基础域名验证
+        String ipv4Pattern = "^((25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.){3}(25[0-5]|2[0-4]\\d|[01]?\\d\\d?)$";
+        String ipv6Pattern = "^([0-9a-fA-F]{1,4}:){7}([0-9a-fA-F]{1,4})$";
+
+        // 验证主机部分
+        boolean validHost = mainPart.matches(domainPattern)
+                || mainPart.matches(ipv4Pattern)
+                || mainPart.matches(ipv6Pattern);
+
+        // 验证端口（如果存在）
+        boolean validPort = (port == -1) || (port > 0 && port <= 65535);
+
+        return validHost && validPort;
+    }
 }
