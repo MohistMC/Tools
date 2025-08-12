@@ -20,6 +20,7 @@ package com.mohistmc.tools;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.jar.JarFile;
@@ -29,13 +30,7 @@ import lombok.SneakyThrows;
  * @Author Mgazul
  * @create 2019/10/12 20:26
  */
-public class JarTool {
-
-    private final Class<?> classz;
-
-    public JarTool(Class<?> classz) {
-        this.classz = classz;
-    }
+public record JarTool(Class<?> classz) {
 
     public static boolean isCorrupted(File f) {
         try {
@@ -83,7 +78,7 @@ public class JarTool {
     @SneakyThrows
     public File getFile() {
         String path = classz.getProtectionDomain().getCodeSource().getLocation().getFile();
-        path = java.net.URLDecoder.decode(path, String.valueOf(StandardCharsets.UTF_8));
+        path = URLDecoder.decode(path, String.valueOf(StandardCharsets.UTF_8));
         return new File(path);
     }
 }

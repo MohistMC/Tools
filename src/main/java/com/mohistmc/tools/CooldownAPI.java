@@ -6,15 +6,7 @@ import java.time.LocalDateTime;
 /**
  * Use LocalDateTime
  */
-public class CooldownAPI {
-
-    private final LocalDateTime old;
-    private final LocalDateTime Now;
-
-    public CooldownAPI(LocalDateTime old, LocalDateTime Now) {
-        this.old = old;
-        this.Now = Now;
-    }
+public record CooldownAPI(LocalDateTime old, LocalDateTime Now) {
 
     public boolean isAfter() {
         return Now.isAfter(old);

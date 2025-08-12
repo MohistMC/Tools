@@ -21,6 +21,10 @@ public class OSUtil {
     }
 
     public enum OS {
-        WINDOWS, LINUX, MAC, SOLARIS
+        WINDOWS, LINUX, MAC, SOLARIS;
+
+        public boolean isWindows() {
+            return this == WINDOWS;
+        }
     }
 }
