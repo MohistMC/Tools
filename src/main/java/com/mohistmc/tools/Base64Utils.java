@@ -7,6 +7,7 @@ public class Base64Utils {
 
     /**
      * Decode Base64 string
+     *
      * @param base64String Base64 encoded string
      * @return Decoded original string
      */
@@ -21,6 +22,7 @@ public class Base64Utils {
 
     /**
      * Encode string to Base64
+     *
      * @param originalString Original string
      * @return Base64 encoded string
      */
@@ -35,6 +37,7 @@ public class Base64Utils {
 
     /**
      * Check if string is valid Base64 encoding
+     *
      * @param str String to check
      * @return Whether it is valid Base64 encoding
      */

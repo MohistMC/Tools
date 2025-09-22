@@ -135,9 +135,6 @@ public class ConnectionUtil {
         }
     }
 
-    record LatencyResult(String url, long latency) {
-    }
-
     public static boolean isValidHost(String host) {
         // 分离主机和端口（如果有）
         String[] parts = host.split(":");
@@ -159,5 +156,8 @@ public class ConnectionUtil {
         boolean validPort = (port == -1) || (port > 0 && port <= 65535);
 
         return validHost && validPort;
+    }
+
+    record LatencyResult(String url, long latency) {
     }
 }

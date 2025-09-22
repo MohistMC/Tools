@@ -95,7 +95,7 @@ public class XMLUtil {
      * Unescapes 'lt', 'gt', 'apos', 'quote' and 'amp' to the
      * corresponding character values.
      *
-     * @param    s    a string representing a character
+     * @param s a string representing a character
      * @return a character value
      */
     public static int unescape(String s) {
@@ -115,7 +115,7 @@ public class XMLUtil {
     /**
      * Checks if a character value should be escaped/unescaped.
      *
-     * @param    s    the String representation of an integer
+     * @param s the String representation of an integer
      * @return true if it's OK to escape or unescape this value
      */
     public static boolean isValidCharacterValue(String s) {
@@ -130,7 +130,7 @@ public class XMLUtil {
     /**
      * Checks if a character value should be escaped/unescaped.
      *
-     * @param    c    a character value
+     * @param c a character value
      * @return true if it's OK to escape or unescape this value
      */
     public static boolean isValidCharacterValue(int c) {
